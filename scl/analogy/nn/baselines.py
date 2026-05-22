@@ -12,7 +12,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 from jacinle.logging import get_logger
-from jactorch.quickstart.models import MLPModel
+#from jactorch.quickstart.models import MLPModel
 
 from .utils import transform
 

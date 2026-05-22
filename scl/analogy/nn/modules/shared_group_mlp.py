@@ -12,8 +12,8 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 from jacinle.logging import get_logger
-from jactorch.nn import Conv1dLayer
-from jactorch.quickstart.models import MLPModel
+#from jactorch.nn import Conv1dLayer
+#from jactorch.quickstart.models import MLPModel
 
 from .modules import FCResBlock
 
@@ -21,6 +21,25 @@ logger = get_logger(__file__)
 
 __all__ = ['GroupMLP', 'SharedGroupMLP']
 
+class MLPModel(nn.Module):
+    def __init__(self, input_dim, output_dim, hidden_dims=None, activation="relu", flatten=False, last_activation=False):
+        super().__init__()
+        hidden_dims = hidden_dims or []
+        dims = [input_dim] + list(hidden_dims) + [output_dim]
+
+        layers = []
+        for i in range(len(dims) - 1):
+            layers.append(nn.Linear(dims[i], dims[i + 1]))
+            if i < len(dims) - 2 or last_activation:
+                layers.append(nn.ReLU())
+
+        self.flatten = flatten
+        self.net = nn.Sequential(*layers)
+
+    def forward(self, x):
+        if self.flatten:
+            x = x.view(x.size(0), -1)
+        return self.net(x)
 
 # Use conv1D with group param as group mlp
 class GroupMLP(nn.Module):

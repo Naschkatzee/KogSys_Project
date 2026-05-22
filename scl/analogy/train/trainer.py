@@ -29,18 +29,32 @@ import jacinle.io as io
 from jacinle.logging import get_logger
 from jacinle.utils.meter import GroupMeters
 from jacinle.utils.tqdm import tqdm_pbar
-from jactorch.train import TrainerEnv
-from jactorch.train.env import default_reduce_func
-from jactorch.utils.meta import as_cuda, as_tensor, as_float, as_cpu
+#from jactorch.train import TrainerEnv
+#from jactorch.train.env import default_reduce_func
+#from jactorch.utils.meta import as_cuda, as_tensor, as_float, as_cpu
 
 from analogy.thutils import monitor_gradrms
+
+def default_reduce_func(name, value):
+    if torch.is_tensor(value):
+        return value.mean()
+    return value
+
+def as_float(x):
+    if isinstance(x, dict):
+        return {k: as_float(v) for k, v in x.items()}
+    if torch.is_tensor(x):
+        return x.detach().cpu().item()
+    if isinstance(x, np.ndarray):
+        return x.item() if x.size == 1 else x.tolist()
+    return float(x)
 
 logger = get_logger(__file__)
 
 __all__ = ['Trainer']
 
 
-class Trainer(TrainerEnv):
+class Trainer(object):
     def __init__(self,
             model,
             optimizer,
@@ -63,7 +77,8 @@ class Trainer(TrainerEnv):
             disable_resume=False,
             summary_file=None,
             fail_cases_file=None):
-        super().__init__(model, optimizer)
+        self.model = model
+        self.optimizer = optimizer
         self.epochs = epochs
         self.lr = lr
         self.use_visual_inputs = use_visual_inputs
@@ -94,9 +109,24 @@ class Trainer(TrainerEnv):
         self.start_epoch = 0
         self.best_val_acc = -1e-6
 
+    def step(self, data):
+        self.optimizer.zero_grad()
+        result = self.model(data)
+
+        if len(result) == 4:
+            loss, monitors, output_dict, extras = result
+        else:
+            loss, monitors, output_dict = result
+            extras = {}
+
+        loss.backward()
+        self.optimizer.step()
+        return loss, monitors, output_dict, extras
+
     def _dump_meters(self, meters, mode, extra_dict=None):
         if self.summary_file is not None:
-            meters_kv = meters._canonize_values('avg')
+            meters_kv = dict(meters.avg)
+            meters_kv = as_float(meters_kv)
             meters_kv['mode'] = mode
             meters_kv['epoch'] = self.current_epoch
             if extra_dict is not None:
@@ -148,6 +178,8 @@ class Trainer(TrainerEnv):
                 loss = default_reduce_func('loss', loss)
                 monitors = {
                     k: default_reduce_func(k, v) for k, v in monitors.items()}
+
+                
 
                 loss = as_float(loss)
                 monitors = as_float(monitors)
@@ -349,6 +381,21 @@ class Trainer(TrainerEnv):
         if last_epoch > self.start_epoch:
             self.customer_save_checkpoint(self.ckpt_dir, last_epoch, is_last=True)
         # return all_meters
+
+    def save_checkpoint(self, filename, extra=None):
+        state = {
+            'model': self.model.state_dict(),
+            'optimizer': self.optimizer.state_dict(),
+            'extra': extra or {}
+        }
+        torch.save(state, filename)
+
+    def load_checkpoint(self, filename):
+        state = torch.load(filename, map_location='cpu')
+        self.model.load_state_dict(state['model'])
+        self.optimizer.load_state_dict(state['optimizer'])
+        return state.get('extra', {})
+
 
     def customer_save_checkpoint(self, ckpt_dir, epoch,
             is_last=False, is_best=False):

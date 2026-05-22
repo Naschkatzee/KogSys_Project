@@ -29,10 +29,11 @@ import torch.optim as optim
 
 from jacinle.logging import get_logger, set_output_file
 from jacinle.utils.printing import kvprint, kvformat
-from jactorch.cli import dump_metainfo
-from jactorch.data.dataloader import JacDataLoader
-from jactorch.parallel import JacDataParallel
-from jactorch.train import TrainerEnv
+#from jactorch.cli import dump_metainfo
+from torch.utils.data import DataLoader as JacDataLoader
+#from jactorch.data.dataloader import JacDataLoader
+#from jactorch.parallel import JacDataParallel
+#from jactorch.train import TrainerEnv
 
 from analogy.constant import MAX_VALUE
 from analogy.dataset import get_dataset_name_and_num_features, load_data
@@ -433,7 +434,7 @@ def main():
     # logger.info('\n' + kvformat(args.__dict__))
     logger.critical('Writing metainfo to file: "{}".'.format(args.meta_file))
     with open(args.meta_file, 'w') as f:
-        f.write(dump_metainfo(args=args.__dict__))
+        f.write(str(args.__dict__))
 
     train_dataset_size = None
     val_dataset_size = None

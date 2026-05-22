@@ -13,8 +13,8 @@ import torch.nn.functional as F
 
 from jacinle.logging import get_logger
 
-from jactorch.quickstart.models import MLPModel
-from jactorch.nn import Conv2d
+#from jactorch.quickstart.models import MLPModel
+#from jactorch.nn import Conv2d
 
 from .modules import FCResBlock, SharedGroupMLP, Expert, Scorer
 from .utils import transform

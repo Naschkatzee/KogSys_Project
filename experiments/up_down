@@ -1,0 +1,7 @@
+The up_down experiment completed successfully and produced another near-perfect result. The technical setup was kept identical to the previous experiments: 300 epochs, Adam optimizer, learning rate 0.005, weight decay 0.01, training batch size 128, evaluation batch size 32, the generated I-RAVEN dataset, and the prepared train/validation/test index files.
+
+After 300 epochs, the model reached 100% training accuracy and approximately 99.95% test accuracy. The final training loss was extremely low, and the test loss also remained close to zero, indicating stable convergence and very strong generalization. There is no meaningful evidence of overfitting, because the test accuracy stayed almost identical to the training accuracy throughout the final epochs.
+
+This result is important because it confirms the pattern observed after left_right: the reproduced SCL implementation performs extremely well on directional two-part configurations. Together, left_right and up_down suggest that the implementation is capable of learning structured spatial relations when the scene is divided into two main object regions. The weaker results on distribute_four and distribute_nine therefore appear to be specific to dense grid-based reasoning rather than a general failure of the training setup.
+
+In terms of replication, this result strongly supports the paper’s findings for the easier spatial configurations. The model’s performance on up_down is consistent with the near-perfect accuracies reported for corresponding configurations in the original SCL paper.

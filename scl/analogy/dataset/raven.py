@@ -105,6 +105,13 @@ class RAVENDataset(Dataset):
             # print(symbol.shape)
             data['symbol_onehot'] = one_hot
 
+        if isinstance(symbol, np.ndarray):
+            target_shape = (16, 9, 7)
+            padded = np.zeros(target_shape, dtype=symbol.dtype)
+            slices = tuple(slice(0, min(symbol.shape[i], target_shape[i])) for i in range(len(symbol.shape)))
+            padded[slices] = symbol[slices]
+            symbol = padded
+
         data['symbol'] = symbol
         return data
 

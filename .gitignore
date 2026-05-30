@@ -6,3 +6,4 @@ __pycache__/
 *.pt
 *.pth
 scl/runs/
+scl/runs_preprocessed/

@@ -1,0 +1,7 @@
+The up_down configuration used the corresponding symbolic feature dimensionality of 8 features.
+
+The preprocessed up_down experiment achieved virtually perfect performance and closely reproduced the behavior observed in the raw-data experiment. Training converged rapidly and remained stable throughout the final training stages, with both training and test accuracy consistently approaching 100%. Unlike some of the more challenging distributed configurations, no evidence of optimization instability or performance degradation was observed. The model demonstrated excellent generalization, maintaining an extremely small gap between training and test performance.
+
+The final test accuracy of approximately 99.95% is effectively identical to the raw-data result and confirms that preprocessing does not negatively affect the model's ability to solve the up_down configuration. As in the other preprocessing experiments, the most substantial impact was a significant reduction in training time. Individual epochs required less than half a second, representing a dramatic improvement in computational efficiency compared to the original raw-data pipeline.
+
+These results further support the emerging pattern observed throughout the preprocessing evaluation: preprocessing substantially accelerates execution while leaving predictive performance largely unchanged. For easier configurations such as up_down, both the raw and preprocessed pipelines enable the model to reach near-perfect performance.

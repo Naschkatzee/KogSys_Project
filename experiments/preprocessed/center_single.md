@@ -1,0 +1,5 @@
+The center_single configuration used the corresponding symbolic feature dimensionality of 4 features.
+
+The preprocessed center_single experiment achieved virtually identical performance to the corresponding raw-data experiment. The model reached perfect training accuracy during the later stages of optimization and maintained a test accuracy of approximately 99.95% throughout the final epochs. No signs of instability, overfitting, or degraded generalization were observed. The behavior closely mirrored the results obtained using the raw-data pipeline, indicating that preprocessing does not materially affect performance on the center_single configuration.
+
+As observed in the other preprocessing experiments, the primary impact of preprocessing was a substantial reduction in training time. Individual epochs required less than half a second, making training significantly more efficient while preserving predictive performance. The results therefore provide further evidence that preprocessing primarily improves computational efficiency rather than model accuracy.

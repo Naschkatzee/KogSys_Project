@@ -1,0 +1,3 @@
+The in_out configuration used the corresponding symbolic feature dimensionality of 8 features.
+
+The preprocessed in_out experiment confirmed that preprocessing does not harm the model’s ability to solve easier spatial configurations. The model achieved near-perfect performance for most of the final training phase, with test accuracy repeatedly reaching approximately 99.95%. Although the final epoch dropped slightly to approximately 99.30%, the overall behavior remained consistent with the raw-data experiment and with the previously observed near-perfect performance on this configuration. As in the other preprocessed experiments, the most visible effect of preprocessing was a major reduction in runtime rather than a substantial change in accuracy.

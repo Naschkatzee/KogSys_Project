@@ -1,4 +1,4 @@
-The distribute_four configuration used the corresponding symbolic feature dimensionality of 28 features.
+The in_distri configuration used the corresponding symbolic feature dimensionality of 28 features.
 
 Unlike distribute_four and distribute_nine, where preprocessing produced either negligible improvements or slight decreases, the in_distri configuration maintained essentially the same level of performance after preprocessing. Training converged normally, reaching approximately 79.7% training accuracy and 61.9% test accuracy by epoch 300. The gap between training and test performance remained comparable to the raw-data experiment, indicating that preprocessing did not substantially affect the model's generalization behavior.
 

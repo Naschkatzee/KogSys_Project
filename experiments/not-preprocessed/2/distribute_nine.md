@@ -1,0 +1,11 @@
+grep -n "best val acc" runs_raw_verified/distribute_nine/train.log | tail -1
+
+The verified rerun of the distribute_nine configuration was performed using the same training setup and symbolic feature dimensionality of 63 features as the original raw-data experiment. As with the other verification runs, the objective was to assess the reproducibility of the previously observed performance under a different random initialization.
+
+The rerun achieved a best validation accuracy of 47.64% at epoch 7. This result is remarkably close to the best validation accuracy obtained in the original raw-data experiment, which reached 47.91% at epoch 66. The difference between the two runs is less than 0.3 percentage points, indicating a very high degree of consistency despite the stochastic nature of the training process.
+
+An interesting observation is that the best validation performance in the rerun was reached much earlier than in the original experiment. While the first run continued to improve gradually until epoch 66, the rerun achieved its peak performance after only seven epochs. However, both experiments ultimately converged to essentially the same accuracy level. This suggests that although the precise optimization trajectory depends on random initialization and training dynamics, the attainable performance of the model on this configuration remains largely unchanged.
+
+The rerun therefore reinforces the conclusions drawn from the original experiment. The distribute_nine configuration remains one of the most challenging tasks for the reproduced SCL implementation. Despite the substantially larger symbolic representation and extended training duration, performance remains below 50%, indicating that the model struggles to capture the complex relational dependencies present in this configuration.
+
+Overall, the close agreement between the original experiment and the verified rerun provides strong evidence that the observed performance is reproducible and stable. The negligible difference in validation accuracy suggests that the relatively low performance on distribute_nine is a systematic characteristic of the model rather than the result of a particularly favorable or unfavorable random initialization.

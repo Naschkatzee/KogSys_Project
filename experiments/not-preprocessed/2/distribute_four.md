@@ -1,0 +1,11 @@
+grep -n "best val acc" runs_raw_verified/distribute_four/train.log | tail -1
+
+The verified rerun of the distribute_four configuration was conducted using the same hyperparameters and symbolic feature dimensionality of 28 features as the original raw-data experiment. The objective of the rerun was to evaluate the reproducibility of the previously obtained result and to assess the sensitivity of the model to different random initializations.
+
+The rerun achieved a best validation accuracy of 50.29% at epoch 14. Compared to the original raw-data experiment, which reached a best validation accuracy of 48.91% at epoch 17, the rerun produced a slightly higher result of approximately 1.4 percentage points. Although the difference is small, it demonstrates that some variation exists between independent training runs when no explicit random seed is specified.
+
+Importantly, the overall behavior of the model remained consistent across both experiments. In both runs, validation accuracy improved rapidly during the early stages of training and reached its optimum within the first few dozen epochs. Afterward, performance fluctuated around a relatively stable level without substantial further improvement. The fact that both runs converged to nearly identical accuracy levels suggests that the observed performance is characteristic of the model rather than the consequence of a particular random initialization.
+
+The rerun therefore supports the conclusions drawn from the original experiment. While the SCL architecture is capable of learning meaningful patterns within the distribute_four configuration, performance remains substantially below the near-perfect accuracies observed for simpler tasks such as center_single. The reproducibility of the result across independent runs indicates that this limitation is systematic and reflects the increased complexity of the distribute_four reasoning task rather than instability in the training procedure.
+
+Overall, the close agreement between the original experiment and the verified rerun provides evidence that the obtained performance is robust and reproducible. The small difference in accuracy falls within the range expected from stochastic training effects and does not alter the overall interpretation of the results.

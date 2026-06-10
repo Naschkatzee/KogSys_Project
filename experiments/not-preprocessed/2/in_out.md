@@ -1,0 +1,1 @@
+grep -n "best val acc" runs_raw_verified/in_out/train.log | tail -1

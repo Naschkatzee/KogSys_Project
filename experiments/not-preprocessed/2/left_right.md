@@ -1,0 +1,11 @@
+grep -n "best val acc" runs_raw_verified/left_right/train.log | tail -1
+
+The verified rerun of the left_right configuration was performed using the same training setup and symbolic feature dimensionality of 8 features as the original raw-data experiment. The purpose of this rerun was to evaluate the reproducibility of the previously obtained result and to determine whether the observed performance remained stable under a different random initialization.
+
+The rerun achieved a best validation accuracy of 100.0% at epoch 105. This result is identical to the best validation accuracy obtained in the original raw-data experiment, which also reached 100.0% validation accuracy, although considerably earlier at epoch 22. The difference in convergence epoch indicates that the optimization trajectory varied between the two runs, which is expected in the absence of explicitly fixed random seeds. However, both experiments ultimately converged to the same optimal solution.
+
+The agreement between the two runs demonstrates that the left_right configuration can be solved reliably by the reproduced SCL implementation. In both experiments, validation accuracy increased steadily until perfect performance was reached and subsequently remained near this level for the remainder of training. The ability to achieve identical peak performance despite different convergence dynamics suggests that the learned solution is robust and not dependent on a particular initialization.
+
+Compared to more challenging configurations such as distribute_four, distribute_nine, and in_distri, the left_right task appears substantially easier for the model. The symbolic relations required to solve the problem can be learned consistently, resulting in perfect generalization performance across independent training runs.
+
+Overall, the rerun confirms the conclusions drawn from the original experiment. The left_right configuration is solved reliably by the reproduced SCL architecture, and the identical best validation accuracies obtained in both runs provide strong evidence for the reproducibility and stability of the result. The variation in the epoch at which convergence occurs reflects normal stochastic variation during training and does not affect the overall interpretation of the experiment.

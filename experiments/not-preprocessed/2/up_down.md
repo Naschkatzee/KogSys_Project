@@ -1,0 +1,11 @@
+grep -n "best val acc" runs_raw_verified/up_down/train.log | tail -1
+
+The verified rerun of the up_down configuration was conducted using the same experimental setup and symbolic feature dimensionality of 8 features as the original raw-data experiment. The objective of this rerun was to assess the reproducibility of the previously observed performance and to evaluate the influence of random initialization on the final result.
+
+The rerun achieved a best validation accuracy of 99.95% at epoch 41. This result is identical to the best validation accuracy obtained in the original raw-data experiment, which also reached 99.95%, although at an earlier epoch of 15. The matching peak performance demonstrates that the reproduced SCL implementation is able to solve this configuration consistently across independent training runs.
+
+While the two runs differ in the number of epochs required to reach their optimal validation accuracy, this variation is expected in the absence of explicitly fixed random seeds. Different initializations may alter the precise optimization trajectory and convergence speed, but the final performance remains effectively unchanged. The fact that both experiments converged to the same validation accuracy indicates that the learned solution is robust and can be recovered reliably from different starting conditions.
+
+The up_down configuration therefore exhibits behavior similar to the left_right task. Both configurations are solved almost perfectly by the reproduced model, suggesting that the symbolic relations required for these two-part spatial arrangements are comparatively easy for the architecture to capture. Unlike the substantially more difficult distribute_four, distribute_nine, and in_distri configurations, the model consistently reaches near-perfect generalization performance on up_down.
+
+Overall, the rerun confirms the findings of the original experiment. The virtually identical validation accuracy obtained across both runs provides strong evidence for the stability and reproducibility of the result. Consequently, the high performance observed on the up_down configuration can be regarded as a reliable characteristic of the reproduced SCL implementation rather than an artifact of a particular training run.

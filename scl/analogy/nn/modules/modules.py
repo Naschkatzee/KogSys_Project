@@ -25,6 +25,45 @@ logger = get_logger(__file__)
 __all__ = ['FCResBlock', 'Expert', 'Scorer', 'ConvBlock', 'ConvNet',
     'ResNet', 'ResNetWrapper']
 
+class Conv2d(nn.Conv2d):
+    def __init__(self,
+                 in_channels,
+                 out_channels,
+                 kernel_size,
+                 stride=1,
+                 padding=0,
+                 dilation=1,
+                 groups=1,
+                 bias=True,
+                 padding_mode='zeros',
+                 activation=None,
+                 batch_norm=False):
+        super().__init__(
+            in_channels,
+            out_channels,
+            kernel_size,
+            stride=stride,
+            padding=padding,
+            dilation=dilation,
+            groups=groups,
+            bias=bias,
+            padding_mode=padding_mode
+        )
+
+        self.activation = activation
+        self.batch_norm = nn.BatchNorm2d(out_channels) if batch_norm else None
+
+    def forward(self, x):
+        x = super().forward(x)
+
+        if self.batch_norm is not None:
+            x = self.batch_norm(x)
+
+        if self.activation is not None:
+            x = self.activation(x)
+
+        return x
+
 class MLPModel(nn.Module):
     def __init__(self, input_dim, output_dim, hidden_dims=None, activation="relu", flatten=False, last_activation=False):
         super().__init__()

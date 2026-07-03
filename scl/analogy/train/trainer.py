@@ -49,6 +49,17 @@ def as_float(x):
         return x.item() if x.size == 1 else x.tolist()
     return float(x)
 
+def as_cuda(x):
+    if torch.is_tensor(x):
+        return x.cuda(non_blocking=True)
+    if isinstance(x, dict):
+        return {k: as_cuda(v) for k, v in x.items()}
+    if isinstance(x, list):
+        return [as_cuda(v) for v in x]
+    if isinstance(x, tuple):
+        return tuple(as_cuda(v) for v in x)
+    return x
+
 logger = get_logger(__file__)
 
 __all__ = ['Trainer']

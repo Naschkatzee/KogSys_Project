@@ -45,6 +45,10 @@ from utils import plot_curve, get_exp_name, get_image_title
 import matplotlib.pyplot as plt
 from sklearn.manifold import TSNE
 
+import torch.nn as nn
+
+JacDataParallel = nn.DataParallel
+
 parser = argparse.ArgumentParser()
 
 seeds = parser.add_argument_group('Random Seeds')
@@ -488,7 +492,7 @@ def main():
 
     if args.use_gpu:
         # model.cuda()
-        model = JacDataParallel(model).cuda()
+        model = nn.DataParallel(model).cuda()   
 
     trainer = Trainer(model,
         optimizer,
